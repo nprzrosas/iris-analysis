@@ -6,7 +6,7 @@ para visualizar la distribución de cada característica diferenciada por especi
 
 ## Requisitos
 
-- Python 3.10+
+- Python 3.9+
 - [pip](https://pip.pypa.io) o [uv](https://github.com/astral-sh/uv)
 
 ## Instalación
