@@ -1,34 +1,59 @@
 # iris-analysis
 
 Proyecto completo en Python para generar histogramas de las cuatro características
-medidas en el dataset Iris (`iris.csv`). Los histogramas se guardan en un archivo PNG
+medidas en el dataset Iris (`data/iris.csv`). Los histogramas se guardan en un archivo PNG
 para visualizar la distribución de cada característica diferenciada por especie.
 
-## Requisitos
+## Estructura pensada para Code Ocean
 
-- Python 3.9+
-- [pip](https://pip.pypa.io) o [uv](https://github.com/astral-sh/uv)
+```
+.
+├── code/        # Código fuente, dependencias y entrypoints
+├── data/        # Datos de solo lectura (se copia a /data en el cápsula)
+├── scratch/     # Resultados intermedios (persisten entre sesiones)
+└── results/     # Productos finales (snapshoteados al cerrar la sesión)
+```
 
-## Instalación
+- `code/src/iris_analysis/`: paquete principal (carga CSV y genera histogramas).
+- `code/pyproject.toml` y `code/requirements.txt`: dependencias y script `iris-histograms`.
+- `data/iris.csv`: dataset de entrada que debes adjuntar como *data asset* en Code Ocean.
+- `results/`: carpeta de salida por defecto (`iris_feature_histograms.png`).
+
+## Configuración local
 
 ```bash
+cd code
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
 ```
 
-## Uso
+## Ejecución
+
+Desde el directorio `code/` una vez instalado el paquete:
 
 ```bash
-iris-histograms --input iris.csv --output-dir plots --bins 20
+python -m iris_analysis.generate_histograms  # usa ../data e imprime la ruta del PNG
 ```
 
-Al finalizar, se creará `plots/iris_feature_histograms.png` con un histograma por
-característica (largo/ancho de sépalo y pétalo). Ajusta `--bins` para cambiar la
-resolución de los histogramas.
+La CLI detecta automáticamente la ubicación del dataset y escribe la imagen en `../results`.
+Puedes controlar los parámetros manualmente:
 
-## Estructura
+```bash
+iris-histograms --input ../data/iris.csv --output-dir ../results --bins 20
+```
 
-- `iris.csv`: dataset original con las medidas.
-- `src/iris_analysis/`: paquete con utilidades de carga y graficado.
-- `pyproject.toml`: dependencias y punto de entrada `iris-histograms`.
+## Uso dentro de Code Ocean
+
+1. Copia el contenido de este repositorio en el directorio `code/` de la cápsula.
+2. Adjunta `data/iris.csv` como *data asset* para que esté disponible en `/data/iris.csv`.
+3. En la cápsula ejecuta:
+
+```bash
+pip install -r code/requirements.txt
+pip install -e code
+python -m iris_analysis.generate_histograms  # lee /data y escribe en /results
+```
+
+El comando crea `/results/iris_feature_histograms.png`, que quedará incluido en el snapshot
+de resultados de Code Ocean.

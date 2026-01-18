@@ -2,7 +2,15 @@ __pycache__/
 *.pyc
 .venv/
 .env
+code/.venv/
 dist/
 build/
+code/dist/
+code/build/
 plots/
+results/*
+!results/.gitkeep
+scratch/*
+!scratch/.gitkeep
 *.egg-info/
+code/*.egg-info/
