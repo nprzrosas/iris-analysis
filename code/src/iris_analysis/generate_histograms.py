@@ -6,8 +6,18 @@ import argparse
 import os
 from pathlib import Path
 
-from .data import load_iris_data
-from .plotting import plot_histograms
+try:
+    from .data import load_iris_data
+    from .plotting import plot_histograms
+except ImportError:  # pragma: no cover - fallback when run as script
+    import sys
+
+    PACKAGE_ROOT = Path(__file__).resolve().parent
+    if str(PACKAGE_ROOT) not in sys.path:
+        sys.path.insert(0, str(PACKAGE_ROOT))
+
+    from data import load_iris_data  # type: ignore  # pylint: disable=import-error
+    from plotting import plot_histograms  # type: ignore  # pylint: disable=import-error
 
 
 CODE_OCEAN_DATA = Path("/data/iris.csv")
